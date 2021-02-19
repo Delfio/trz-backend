@@ -1,0 +1,16 @@
+{
+  "name": "the-resident-zombie",
+  "version": "1.0.0",
+  "description": "The world, as we know it, has fallen into an apocalyptic scenario. The \"Influenzer T-Virus\" (a.k.a. Twiter Virus) is transforming human beings into stupid beasts (a.k.a. Zombies), hungry to cancel humans and eat their limbs.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Delfio",
+  "license": "ISC",
+  "devDependencies": {
+    "git-commit-msg-linter": "^3.0.0",
+    "husky": "^5.0.9"
+  }
+}
