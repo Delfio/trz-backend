@@ -2,9 +2,9 @@
   "name": "the-resident-zombie",
   "version": "1.0.0",
   "description": "The world, as we know it, has fallen into an apocalyptic scenario. The \"Influenzer T-Virus\" (a.k.a. Twiter Virus) is transforming human beings into stupid beasts (a.k.a. Zombies), hungry to cancel humans and eat their limbs.",
-  "main": "index.js",
+  "main": "src/main/server.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --watch --no-cache"
   },
   "keywords": [],
   "author": "Delfio",
@@ -19,7 +19,6 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jest": "^24.1.5",
     "git-commit-msg-linter": "^3.0.0",
-    "husky": "^5.0.9",
     "jest": "^26.6.3",
     "ts-jest": "^26.5.1",
     "ts-node": "^9.1.1",
