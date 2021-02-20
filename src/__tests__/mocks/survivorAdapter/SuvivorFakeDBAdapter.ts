@@ -1,4 +1,4 @@
-import { ISurvivor } from '../../../domain/survivor';
+import { ISurvivor } from '../../../domain';
 import ISurvivorAdapter from '../../../adpters/database/survivor/ISurvivorAdapter';
 
 class SurvivorDB implements ISurvivorAdapter {

@@ -1,4 +1,4 @@
-import { ISurvivor } from '../../../domain/survivor';
+import { ISurvivor } from '../../../domain';
 
 interface ISurvivorsAdapter {
     addSurvivor(survivor: ISurvivor): Promise<ISurvivor>;

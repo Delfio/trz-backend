@@ -1,4 +1,4 @@
-import { AddSurvivor, ISurvivor, SurvivorDTO } from '../domain/survivor';
+import { AddSurvivor, ISurvivor, SurvivorDTO } from '../domain';
 import ISurvivorAdapter from '../adpters/database/survivor/ISurvivorAdapter';
 
 class AddSurvivorService implements AddSurvivor {
@@ -9,7 +9,6 @@ class AddSurvivorService implements AddSurvivor {
       ...data,
       id: String(Math.random()),
       infected: false,
-      inventory_id: 1,
     });
   }
 }

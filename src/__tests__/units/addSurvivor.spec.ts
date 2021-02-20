@@ -1,6 +1,6 @@
-import RegisterNewSurvivor from '../../../services/addSurvivor';
-import SurvivorFakeDBAdapter from '../../mocks/survivorAdapter/SuvivorFakeDBAdapter';
-import { SurvivorDTO } from '../../../domain/survivor';
+import RegisterNewSurvivor from '../../services/addSurvivor';
+import SurvivorFakeDBAdapter from '../mocks/survivorAdapter/SuvivorFakeDBAdapter';
+import { SurvivorDTO } from '../../domain';
 
 let registerNewSurvivor: RegisterNewSurvivor;
 let survivorFakeDBAdapter: SurvivorFakeDBAdapter;
@@ -36,10 +36,6 @@ describe('tests responsible for validating business rules aimed at the survivor'
     expect(survivorRegistred.id).not.toBeNull();
     expect(survivorRegistred.id).not.toBeUndefined();
   });
-
-  it.todo('I hope a survivor does not contain the same repository as another survivor');
-
-  it.todo('Expected it is possible to register a survivor with his basic items');
 
   it.todo('I hope it is not possible to register a survivor with no basic informations');
 });
