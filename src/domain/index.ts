@@ -1,11 +1,12 @@
 /* Entities  */
 export * from './models/ISurvivor';
-export * from './models/IITem';
+export * from './models/IItem';
 export * from './models/IInventory';
 
 /* Usescases */
 export * from './usecases/AddSurvivor';
 export * from './usecases/AddItemsToTheSurvivorInventory';
+export * from './usecases/GetItemByID';
 
 /* DTOs */
 export * from './DTO/SurvivorDTO';

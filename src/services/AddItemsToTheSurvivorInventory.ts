@@ -1,19 +1,34 @@
-import { AddItemsToTheSurvivorInventory, IInventory, InventoryDTO } from '../domain';
-import ISurvivorAdapter from '../adpters/database/survivor/ISurvivorAdapter';
+import {
+  AddItemsToTheSurvivorInventory, IInventory, InventoryDTO, GetItemByID,
+} from '../domain';
+import ISurvivorAdapter from '../adpters/database/ISurvivorAdapter';
 
 class AddItemsToTheSurvivorInventoryService implements AddItemsToTheSurvivorInventory {
-  constructor(private survivorAdapter: ISurvivorAdapter) {}
+  constructor(
+      private survivorAdapter: ISurvivorAdapter,
+      private getItemByID: GetItemByID,
+  ) {}
 
   async execute(data: InventoryDTO): Promise<IInventory> {
-    const survivorExists = await this.survivorAdapter.getSurvivor(data.survivor_id);
+    return Promise.all(
+      [
+        this.survivorAdapter.getSurvivor(data.survivor_id),
+        this.getItemByID.execute(data.item_id),
+      ],
+    ).then((res) => {
+      if (!res[0]) {
+        throw new Error('survivor dont exists!');
+      }
+      if (!res[1]) {
+        throw new Error('item dont exists!');
+      }
 
-    if (!survivorExists) {
-      throw new Error('erro, sobrevivente não existe');
-    }
-
-    return {
-      ...data,
-    };
+      return {
+        ...data,
+      };
+    }).catch((err) => {
+      throw new Error(`Error in adding item into inventory ${err}`);
+    });
   }
 }
 

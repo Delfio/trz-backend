@@ -1,4 +1,4 @@
-import RegisterNewSurvivor from '../../services/addSurvivor';
+import RegisterNewSurvivor from '../../services/AddSurvivor';
 import SurvivorFakeDBAdapter from '../mocks/survivorAdapter/SuvivorFakeDBAdapter';
 import { SurvivorDTO } from '../../domain';
 

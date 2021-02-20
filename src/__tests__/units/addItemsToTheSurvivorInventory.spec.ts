@@ -1,15 +1,24 @@
 import { v1 } from 'uuid';
 import AddItemsToTheSurvivorInventory from '../../services/AddItemsToTheSurvivorInventory';
+import GetItemByIDService from '../../services/GetItemByID';
 import SuvivorFakeDBAdapter from '../mocks/survivorAdapter/SuvivorFakeDBAdapter';
-import { InventoryDTO, ISurvivor } from '../../domain';
+import ItemFakeDBAdapter from '../mocks/itemAdapter/ItemFakeDBAdapter';
+import { IItem, InventoryDTO, ISurvivor } from '../../domain';
 
 let addItemsToTheSurvivorInventory: AddItemsToTheSurvivorInventory;
 let suvivorFakeDBAdapter: SuvivorFakeDBAdapter;
+let getItemByIDService: GetItemByIDService;
+let itemFakeDBAdapter: ItemFakeDBAdapter;
 
 describe('tests responsible for validating business rule related to adding items to the survivor inventory', () => {
   beforeEach(() => {
+    itemFakeDBAdapter = new ItemFakeDBAdapter();
+    getItemByIDService = new GetItemByIDService(itemFakeDBAdapter);
     suvivorFakeDBAdapter = new SuvivorFakeDBAdapter();
-    addItemsToTheSurvivorInventory = new AddItemsToTheSurvivorInventory(suvivorFakeDBAdapter);
+    addItemsToTheSurvivorInventory = new AddItemsToTheSurvivorInventory(
+      suvivorFakeDBAdapter,
+      getItemByIDService,
+    );
   });
 
   const JoeDoeSurvivor = (id: string): ISurvivor => ({
@@ -23,16 +32,25 @@ describe('tests responsible for validating business rule related to adding items
     name: 'Joe Doe',
   });
 
+  const standardItem = (id: string, points = 5): IItem => ({
+    item_description: 'item standard',
+    item_id: id,
+    item_points: points,
+  });
+
   it('must be possible to insert items into a survivor inventory', async () => {
     expect.hasAssertions();
 
+    const FakeItem = standardItem(v1());
+
+    await itemFakeDBAdapter.addItem(FakeItem);
     const newSurvivor = await suvivorFakeDBAdapter.addSurvivor({
       ...JoeDoeSurvivor(v1()),
     });
 
     const inventoryDTO: InventoryDTO = {
       amount: 5,
-      item_id: 'aaa-bbb-ccc-ddd',
+      item_id: FakeItem.item_id,
       survivor_id: newSurvivor.id,
     };
     const items = await addItemsToTheSurvivorInventory.execute(inventoryDTO);
@@ -47,7 +65,24 @@ describe('tests responsible for validating business rule related to adding items
     const inventoryDTO: InventoryDTO = {
       amount: 5,
       item_id: 'aaa-bbb-ccc-ddd',
-      survivor_id: 'aaa-cccc-ddd-eee',
+      survivor_id: 'survivor not exists',
+    };
+
+    await expect(addItemsToTheSurvivorInventory.execute(inventoryDTO))
+      .rejects.toBeInstanceOf(Error);
+  });
+
+  it('should not be able to add item with in inventory if item not exists', async () => {
+    expect.hasAssertions();
+
+    const newSurvivor = await suvivorFakeDBAdapter.addSurvivor({
+      ...JoeDoeSurvivor(v1()),
+    });
+
+    const inventoryDTO: InventoryDTO = {
+      amount: 5,
+      item_id: 'aaa-bbb-ccc-ddd',
+      survivor_id: newSurvivor.id,
     };
 
     await expect(addItemsToTheSurvivorInventory.execute(inventoryDTO))
