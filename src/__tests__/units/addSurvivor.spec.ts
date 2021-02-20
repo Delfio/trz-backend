@@ -1,5 +1,5 @@
 import RegisterNewSurvivor from '../../services/AddSurvivor';
-import SurvivorFakeDBAdapter from '../mocks/survivorAdapter/SuvivorFakeDBAdapter';
+import SurvivorFakeDBAdapter from '../mocks/SuvivorFakeDBAdapter';
 import { SurvivorDTO } from '../../domain';
 
 let registerNewSurvivor: RegisterNewSurvivor;
@@ -36,6 +36,4 @@ describe('tests responsible for validating business rules aimed at the survivor'
     expect(survivorRegistred.id).not.toBeNull();
     expect(survivorRegistred.id).not.toBeUndefined();
   });
-
-  it.todo('I hope it is not possible to register a survivor with no basic informations');
 });

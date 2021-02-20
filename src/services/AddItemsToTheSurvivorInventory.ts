@@ -1,11 +1,11 @@
 import {
   AddItemsToTheSurvivorInventory, IInventory, InventoryDTO, GetItemByID,
 } from '../domain';
-import ISurvivorAdapter from '../adpters/database/ISurvivorAdapter';
+import { ISurvivorsAdapter } from '../adpters/database';
 
 class AddItemsToTheSurvivorInventoryService implements AddItemsToTheSurvivorInventory {
   constructor(
-      private survivorAdapter: ISurvivorAdapter,
+      private survivorAdapter: ISurvivorsAdapter,
       private getItemByID: GetItemByID,
   ) {}
 

@@ -1,8 +1,8 @@
 import { v1 } from 'uuid';
 import AddItemsToTheSurvivorInventory from '../../services/AddItemsToTheSurvivorInventory';
 import GetItemByIDService from '../../services/GetItemByID';
-import SuvivorFakeDBAdapter from '../mocks/survivorAdapter/SuvivorFakeDBAdapter';
-import ItemFakeDBAdapter from '../mocks/itemAdapter/ItemFakeDBAdapter';
+import SuvivorFakeDBAdapter from '../mocks/SuvivorFakeDBAdapter';
+import ItemFakeDBAdapter from '../mocks/ItemFakeDBAdapter';
 import { IItem, InventoryDTO, ISurvivor } from '../../domain';
 
 let addItemsToTheSurvivorInventory: AddItemsToTheSurvivorInventory;

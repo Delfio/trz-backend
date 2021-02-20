@@ -1,5 +1,5 @@
-import IItemAdapter from '../../../adpters/database/IItemAdapter';
-import { IItem } from '../../../domain';
+import { IItemAdapter } from '../../adpters/database';
+import { IItem } from '../../domain';
 
 class ItemAdapterFakeDB implements IItemAdapter {
     private lstOfItems: IItem[] = [];

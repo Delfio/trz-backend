@@ -1,7 +1,7 @@
-import { ISurvivor } from '../../../domain';
-import ISurvivorAdapter from '../../../adpters/database/ISurvivorAdapter';
+import { ISurvivor } from '../../domain';
+import { ISurvivorsAdapter } from '../../adpters/database';
 
-class SurvivorDB implements ISurvivorAdapter {
+class SurvivorDB implements ISurvivorsAdapter {
     private listOfSurvivors: ISurvivor[] = [];
 
     async addSurvivor(survivor: ISurvivor): Promise<ISurvivor> {
