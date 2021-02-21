@@ -19,6 +19,14 @@ class ItemAdapterFakeDB implements IItemAdapter {
     async addItem(item: IItem): Promise<void> {
       this.lstOfItems.push(item);
     }
+
+    private async updateItemAmount(itemRefer: IItem): Promise<void> {
+      const itemExists = this.lstOfItems.find(
+        (item) => item.item_id === itemRefer.item_id,
+      );
+
+      itemExists!.item_amount_total += 1;
+    }
 }
 
 export default ItemAdapterFakeDB;

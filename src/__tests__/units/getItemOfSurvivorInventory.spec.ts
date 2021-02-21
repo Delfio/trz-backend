@@ -44,11 +44,11 @@ describe('tests responsible for validating access to an item in a survivor inven
       suvivorFakeDBAdapter.addSurvivor(JoeDoeSurvivor(v1())),
     ]);
 
-    await inventoryFakeDBAdapter.addItemToSurvivorInventory(
-      itemsGenerated,
-      joeDoe,
-      faker.random.number(5),
-    );
+    await inventoryFakeDBAdapter.addItemToSurvivorInventory({
+      ...itemsGenerated,
+      amount: faker.random.number(5),
+      survivor_id: joeDoe.id,
+    });
 
     const item = await getItemOfSurvivorInventory.execute(joeDoe.id, itemsGenerated.item_id);
 
@@ -79,11 +79,11 @@ describe('tests responsible for validating access to an item in a survivor inven
       }),
     ]);
 
-    await inventoryFakeDBAdapter.addItemToSurvivorInventory(
-      itemsGenerated,
-      joeDoe,
-      faker.random.number(5),
-    );
+    await inventoryFakeDBAdapter.addItemToSurvivorInventory({
+      ...itemsGenerated,
+      amount: faker.random.number(5),
+      survivor_id: joeDoe.id,
+    });
 
     await expect(getItemOfSurvivorInventory.execute(joeDoe.id, itemsGenerated.item_id))
       .rejects.toBeInstanceOf(DomainErro);

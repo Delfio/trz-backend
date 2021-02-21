@@ -1,10 +1,9 @@
 import * as Yup from 'yup';
 import { ISurvivor } from '../../domain';
 import { ISurvivorsAdapter, IItemAdapter, IInventoryAdapter } from '../../adapters';
-import AddSurvivor from '../../services/AddSurvivor';
-import AddItemsToTheSurvivorInventory from '../../services/AddItemsToTheSurvivorInventory';
+import AddSurvivorAlongWithTheirStartingItems from '../../services/AddSurvivorAlongWithTheirStartingItems';
 import GetItemByID from '../../services/GetItemByID';
-import { AddSurvivorWithInitialBasicItems } from '../adapters/AddSurvivorWithInitialBasicItems';
+import { RegisterSurvivorWithStartingItemsDTO } from '../../domain/DTO/RegisterSurvivorWithStartingItemsDTO';
 import AppError from '../usecase/MainErros';
 import DomainErrors from '../../usecases/validations/DomainErro';
 
@@ -19,7 +18,7 @@ export class SurvivorController {
     return this.survivorsAdapter.getAllSurvivors();
   }
 
-  async store(data: AddSurvivorWithInitialBasicItems): Promise<ISurvivor> {
+  async store(data: RegisterSurvivorWithStartingItemsDTO): Promise<ISurvivor> {
     const schemaValidation = Yup.object().shape({
       name: Yup.string().required('i know we are into apocalypse, but use your real name!'),
       age: Yup.number().required('Here we risk our lives, it not a scenario for children, please enter your age!'),
@@ -36,30 +35,18 @@ export class SurvivorController {
 
       const { initialInventory, survivor } = data;
 
-      const addSurvivorService = new AddSurvivor(this.survivorsAdapter);
-      const getItemByID = new GetItemByID(this.itemAdapter);
-
-      const addItemsToTheSurvivorInventory = new AddItemsToTheSurvivorInventory(
+      const addSurvivorService = new AddSurvivorAlongWithTheirStartingItems(
         this.survivorsAdapter,
-        getItemByID,
+        this.itemAdapter,
         this.inventoryAdapter,
       );
 
-      const newSurvivor = await addSurvivorService.execute(survivor);
+      const newSurvivor = await addSurvivorService.execute({
+        initialInventory,
+        survivor,
+      });
 
-      const survivorInventory = initialInventory.map(
-        (item) => addItemsToTheSurvivorInventory.execute({
-          ...item,
-          survivor_id: newSurvivor.id,
-        }),
-      );
-
-      const inventory = await Promise.all(survivorInventory);
-
-      return {
-        ...newSurvivor,
-        suvivor_inventory: inventory,
-      };
+      return newSurvivor;
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         throw new AppError(`check the registration information ${error}`, 403);

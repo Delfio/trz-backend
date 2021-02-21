@@ -5,7 +5,7 @@ import { SurvivorController } from '../../main/controllers/SurvivorController';
 import SuvivorFakeDBAdapter from '../mocks/SuvivorFakeDBAdapter';
 import ItemFakeDBAdapter from '../mocks/ItemFakeDBAdapter';
 import InventoryFakeDBAdapter from '../mocks/InventoryFakeDBAdapter';
-import { AddSurvivorWithInitialBasicItems } from '../../main/adapters/AddSurvivorWithInitialBasicItems';
+import { RegisterSurvivorWithStartingItemsDTO } from '../../domain';
 import utils from '../utils';
 
 const { JoeDoeSurvivor, generateRandonInitialItems } = utils;
@@ -36,7 +36,7 @@ describe('tests responsible for validating the entire survivor rule', () => {
 
     await Promise.all(InitialItemsOfTest);
 
-    const baseInformations: AddSurvivorWithInitialBasicItems = {
+    const baseInformations: RegisterSurvivorWithStartingItemsDTO = {
       initialInventory: [{
         item_id: startingItemsInformation[0].item_id,
         amount: 1,
@@ -54,7 +54,7 @@ describe('tests responsible for validating the entire survivor rule', () => {
     expect.hasAssertions();
     const [startingItemsInformation] = await generateRandonInitialItems(5);
 
-    const baseInformations: AddSurvivorWithInitialBasicItems = {
+    const baseInformations: RegisterSurvivorWithStartingItemsDTO = {
       initialInventory: [{
         item_id: startingItemsInformation.item_id,
         amount: 1,
@@ -101,7 +101,7 @@ describe('tests responsible for validating the entire survivor rule', () => {
   it('should not be able to register item into survivor inventory if item not exists', async () => {
     expect.hasAssertions();
 
-    const basicInformationWithAFakeItem: AddSurvivorWithInitialBasicItems = {
+    const basicInformationWithAFakeItem: RegisterSurvivorWithStartingItemsDTO = {
       initialInventory: [{
         item_id: 'item dont exists!',
         amount: 1,

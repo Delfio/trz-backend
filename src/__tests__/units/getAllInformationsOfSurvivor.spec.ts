@@ -51,11 +51,11 @@ describe('tests responsible for validating access to the inventory', () => {
 
     await Promise
       .all(totalItensOfSurvivorInventory
-        .map((index) => inventoryFakeDBAdapter.addItemToSurvivorInventory(
-          randomItems[index],
-          joeDoeSurvivor,
-          faker.random.number(4),
-        )));
+        .map((index) => inventoryFakeDBAdapter.addItemToSurvivorInventory({
+          amount: faker.random.number(5),
+          ...randomItems[index],
+          survivor_id: joeDoeSurvivor.id,
+        })));
 
     const allItemsassignedToTheSurvivorInventory = await getAllInformationsOfSurvivor
       .execute(joeDoeSurvivor.id);
@@ -83,12 +83,18 @@ describe('tests responsible for validating access to the inventory', () => {
 
     await Promise
       .all(totalItensOfSurvivorInventory
-        .map((index) => inventoryFakeDBAdapter.addItemToSurvivorInventory(
+        .map((index) => inventoryFakeDBAdapter.addItemToSurvivorInventory({
+          amount: faker.random.number(5),
+          ...randomItems[index],
+          survivor_id: joeDoeSurvivor.id,
+        })));
+    /*
+
           randomItems[index],
           joeDoeSurvivor,
           faker.random.number(4),
-        )));
 
+*/
     await expect(getAllInformationsOfSurvivor
       .execute(joeDoeSurvivor.id)).rejects.toBeInstanceOf(DomainErro);
   });

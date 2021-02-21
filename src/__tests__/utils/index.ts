@@ -19,10 +19,11 @@ export default {
       length,
     }, (_, index) => index);
 
-    const startingItemsInformation = totalItems.map((points) => ({
+    const startingItemsInformation: IItem[] = totalItems.map((points) => ({
       item_description: faker.lorem.lines(2),
       item_id: v1(),
       item_points: points,
+      item_amount_total: faker.random.number(20),
     }));
 
     return startingItemsInformation;

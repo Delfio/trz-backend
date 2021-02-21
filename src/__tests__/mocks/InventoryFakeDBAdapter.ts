@@ -1,19 +1,11 @@
 import { IInventoryAdapter } from '../../adapters';
-import { IInventory, IItem, ISurvivor } from '../../domain';
+import { IInventory } from '../../domain';
 
 class IInventoryFakeDBAdapter implements IInventoryAdapter {
     private listOfInventory: IInventory[] = [];
 
-    async addItemToSurvivorInventory(
-      item: IItem,
-      survivor: ISurvivor,
-      amount: number,
-    ): Promise<void> {
-      this.listOfInventory.push({
-        survivor_id: survivor.id,
-        ...item,
-        amount,
-      });
+    async addItemToSurvivorInventory(inventory: IInventory): Promise<void> {
+      this.listOfInventory.push(inventory);
     }
 
     async getAllItensIntoSurvivorInventory(survivor_id: string): Promise<IInventory[]> {
