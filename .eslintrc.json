@@ -40,7 +40,8 @@
         ],
         "no-useless-constructor": "off",
         "class-methods-use-this": "off",
-        "jest/no-hooks": "off"
+        "jest/no-hooks": "off",
+        "jest/no-conditional-expect": "off"
     },
     "settings": {
         "import/resolver": {
