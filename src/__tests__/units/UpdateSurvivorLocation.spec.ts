@@ -1,8 +1,10 @@
 import { v1 } from 'uuid';
 import UpdateSurvivorLocation from '../../services/UpdateSurvivorLocation';
 import SuvivorFakeDBAdapter from '../mocks/SuvivorFakeDBAdapter';
-import { coords_of_survivor, ISurvivor } from '../../domain';
+import { coords_of_survivor } from '../../domain';
+import utils from '../utils';
 
+const { JoeDoeSurvivor } = utils;
 let updateSurvivorLocation: UpdateSurvivorLocation;
 let suvivorFakeDBAdapter: SuvivorFakeDBAdapter;
 
@@ -10,17 +12,6 @@ describe('tests responsible for validating rules for changing the survivor locat
   beforeEach(() => {
     suvivorFakeDBAdapter = new SuvivorFakeDBAdapter();
     updateSurvivorLocation = new UpdateSurvivorLocation(suvivorFakeDBAdapter);
-  });
-
-  const JoeDoeSurvivor = (id: string): ISurvivor => ({
-    age: 19,
-    id,
-    infected: false,
-    lastLocation: {
-      latitude: -55.5555,
-      longitude: 55.5555,
-    },
-    name: 'Joe Doe',
   });
 
   it('should be able to change of survivor location', async () => {

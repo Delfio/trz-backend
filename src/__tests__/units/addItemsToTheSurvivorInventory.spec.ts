@@ -4,7 +4,10 @@ import GetItemByIDService from '../../services/GetItemByID';
 import SuvivorFakeDBAdapter from '../mocks/SuvivorFakeDBAdapter';
 import ItemFakeDBAdapter from '../mocks/ItemFakeDBAdapter';
 import InventoryFakeDBAdapter from '../mocks/InventoryFakeDBAdapter';
-import { IItem, InventoryDTO, ISurvivor } from '../../domain';
+import { IItem, InventoryDTO } from '../../domain';
+import ultils from '../utils';
+
+const { JoeDoeSurvivor } = ultils;
 
 let addItemsToTheSurvivorInventory: AddItemsToTheSurvivorInventory;
 let suvivorFakeDBAdapter: SuvivorFakeDBAdapter;
@@ -23,17 +26,6 @@ describe('tests responsible for validating business rule related to adding items
       getItemByIDService,
       inventoryFakeDBAdapter,
     );
-  });
-
-  const JoeDoeSurvivor = (id: string): ISurvivor => ({
-    age: 19,
-    id,
-    infected: false,
-    lastLocation: {
-      latitude: -55.5555,
-      longitude: 55.5555,
-    },
-    name: 'Joe Doe',
   });
 
   const standardItem = (id: string, points = 5): IItem => ({
