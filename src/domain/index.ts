@@ -10,6 +10,8 @@ export * from './usecases/AddItemsToTheSurvivorInventory';
 export * from './usecases/GetItemByID';
 export * from './usecases/UpdateSurvivorLocation';
 export * from './usecases/FlagSurvivorAsInfected';
+export * from './usecases/GetAllInformationsOfSurvivor';
+export * from './usecases/GetItemOfSurvivorInventory';
 
 /* DTOs */
 export * from './DTO/SurvivorDTO';

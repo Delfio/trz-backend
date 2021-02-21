@@ -8,7 +8,7 @@ import InventoryFakeDBAdapter from '../mocks/InventoryFakeDBAdapter';
 import { AddSurvivorWithInitialBasicItems } from '../../main/adapters/AddSurvivorWithInitialBasicItems';
 import utils from '../utils';
 
-const { JoeDoeSurvivor } = utils;
+const { JoeDoeSurvivor, generateRandonInitialItems } = utils;
 let suvivorFakeDBAdapter: SuvivorFakeDBAdapter;
 let survivorController: SurvivorController;
 let inventoryFakeDBAdapter: InventoryFakeDBAdapter;
@@ -26,33 +26,19 @@ describe('tests responsible for validating the entire survivor rule', () => {
     );
   });
 
-  const generateRandonInitialItems = async (length: number) => {
-    const totalItems = Array.from({
-      length,
-    }, (_, index) => index);
+  it('should it will be possible to register a survivor with some default items', async () => {
+    expect.hasAssertions();
 
-    const startingItemsInformation = totalItems.map((points) => ({
-      item_description: faker.lorem.lines(2),
-      item_id: v1(),
-      item_points: points,
-    }));
+    const startingItemsInformation = await generateRandonInitialItems(5);
 
     const InitialItemsOfTest = startingItemsInformation
       .map((item) => itemFakeDBAdapter.addItem(item));
 
     await Promise.all(InitialItemsOfTest);
 
-    return startingItemsInformation;
-  };
-
-  it('should it will be possible to register a survivor with some default items', async () => {
-    expect.hasAssertions();
-
-    const [startingItemsInformation] = await generateRandonInitialItems(5);
-
     const baseInformations: AddSurvivorWithInitialBasicItems = {
       initialInventory: [{
-        item_id: startingItemsInformation.item_id,
+        item_id: startingItemsInformation[0].item_id,
         amount: 1,
       }],
       survivor: JoeDoeSurvivor(v1()),
