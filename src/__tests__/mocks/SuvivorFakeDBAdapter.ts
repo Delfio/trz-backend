@@ -56,6 +56,10 @@ class SurvivorDB implements ISurvivorsAdapter {
         (report) => report.infected_survivor_id === survivorInfected.id,
       );
     }
+
+    async getAllSurvivors(): Promise<ISurvivor[]> {
+      return this.listOfSurvivors;
+    }
 }
 
 export default SurvivorDB;

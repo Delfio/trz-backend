@@ -1,6 +1,9 @@
 import { ISurvivor, ISurvivorInfected } from '../../domain';
 
 export interface ISurvivorsAdapter {
+
+    getAllSurvivors(): Promise<ISurvivor[]>;
+
     addSurvivor(survivor: ISurvivor): Promise<ISurvivor>;
 
     getSurvivor(survivorId: string): Promise<ISurvivor | undefined>;
