@@ -21,8 +21,8 @@ export class SurvivorController {
 
   async store(data: AddSurvivorWithInitialBasicItems): Promise<ISurvivor> {
     const schemaValidation = Yup.object().shape({
-      name: Yup.string().required('').min(4, 'i know we are into apocalypse, but use your real name'),
-      age: Yup.number().required('').min(18, 'only older. Here we risk our lives, it not a scenario for children'),
+      name: Yup.string().required('i know we are into apocalypse, but use your real name!'),
+      age: Yup.number().required('Here we risk our lives, it not a scenario for children, please enter your age!'),
       lastLocation: Yup.object().shape({
         latitude: Yup.number().required(''),
         longitude: Yup.number().required(''),
