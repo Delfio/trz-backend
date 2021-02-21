@@ -1,5 +1,7 @@
 import { v1 } from 'uuid';
 import faker from 'faker';
+import * as Yup from 'yup';
+import AppError from '../../main/usecase/AppError';
 import { SurvivorController } from '../../main/controllers/SurvivorController';
 import SuvivorFakeDBAdapter from '../mocks/SuvivorFakeDBAdapter';
 import ItemFakeDBAdapter from '../mocks/ItemFakeDBAdapter';
@@ -25,11 +27,9 @@ describe('tests responsible for validating the entire survivor rule', () => {
     );
   });
 
-  it('should it will be possible to register a survivor with some default items', async () => {
-    expect.hasAssertions();
-
+  const generateRandonInitialItems = async (length: number) => {
     const totalItems = Array.from({
-      length: 5,
+      length,
     }, (_, index) => index);
 
     const startingItemsInformation = totalItems.map((points) => ({
@@ -43,9 +43,17 @@ describe('tests responsible for validating the entire survivor rule', () => {
 
     await Promise.all(InitialItemsOfTest);
 
+    return startingItemsInformation;
+  };
+
+  it('should it will be possible to register a survivor with some default items', async () => {
+    expect.hasAssertions();
+
+    const [startingItemsInformation] = await generateRandonInitialItems(5);
+
     const baseInformations: AddSurvivorWithInitialBasicItems = {
       initialInventory: [{
-        item_id: startingItemsInformation[0].item_id,
+        item_id: startingItemsInformation.item_id,
         amount: 1,
       }],
       survivor: JoeDoeSurvivor(v1()),
@@ -57,5 +65,51 @@ describe('tests responsible for validating the entire survivor rule', () => {
     expect(survivor.id).not.toBeUndefined();
   });
 
-  it.todo('I hope it is not possible to register a survivor with no basic informations');
+  it('should not be able to register a survivor with no basic informations', async () => {
+    expect.hasAssertions();
+    const [startingItemsInformation] = await generateRandonInitialItems(5);
+
+    const baseInformations: AddSurvivorWithInitialBasicItems = {
+      initialInventory: [{
+        item_id: startingItemsInformation.item_id,
+        amount: 1,
+      }],
+      survivor: {
+        age: 0,
+        lastLocation: {
+          latitude: 0,
+          longitude: 0,
+        },
+        name: '',
+      },
+    };
+
+    await expect(survivorController.store(baseInformations))
+      .rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should be able to return all survivors', async () => {
+    expect.hasAssertions();
+
+    const totalOfRegistredSurvivors = 10;
+
+    const totalSurvivors = Array.from({
+      length: totalOfRegistredSurvivors,
+    }, (_, index) => index);
+
+    const registerSurvivors = totalSurvivors.map((_) => suvivorFakeDBAdapter.addSurvivor({
+      ...JoeDoeSurvivor(v1()),
+      name: faker.name.firstName(),
+      lastLocation: {
+        latitude: Number(faker.address.latitude()),
+        longitude: Number(faker.address.longitude()),
+      },
+    }));
+
+    await Promise.all(registerSurvivors);
+
+    const allSurvivors = await survivorController.index();
+
+    expect(allSurvivors).toHaveLength(totalOfRegistredSurvivors);
+  });
 });
