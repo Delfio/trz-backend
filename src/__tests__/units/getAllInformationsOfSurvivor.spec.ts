@@ -49,10 +49,17 @@ describe('tests responsible for validating access to the inventory', () => {
     const randomItems = await GenerateInitialData(totalItemsLenght);
     await suvivorFakeDBAdapter.addSurvivor(joeDoeSurvivor);
 
+    const recursiveGenerateRandomPositiveNumber = (ultimoId: number): number => {
+      if (ultimoId <= 0) {
+        return recursiveGenerateRandomPositiveNumber(faker.random.number(20));
+      }
+      return ultimoId;
+    };
+
     await Promise
       .all(totalItensOfSurvivorInventory
         .map((index) => inventoryFakeDBAdapter.addItemToSurvivorInventory({
-          amount: faker.random.number(5),
+          amount: recursiveGenerateRandomPositiveNumber(faker.random.number(5)),
           ...randomItems[index],
           survivor_id: joeDoeSurvivor.id,
         })));
@@ -88,13 +95,7 @@ describe('tests responsible for validating access to the inventory', () => {
           ...randomItems[index],
           survivor_id: joeDoeSurvivor.id,
         })));
-    /*
 
-          randomItems[index],
-          joeDoeSurvivor,
-          faker.random.number(4),
-
-*/
     await expect(getAllInformationsOfSurvivor
       .execute(joeDoeSurvivor.id)).rejects.toBeInstanceOf(DomainErro);
   });

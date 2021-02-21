@@ -44,9 +44,16 @@ describe('tests responsible for validating access to an item in a survivor inven
       suvivorFakeDBAdapter.addSurvivor(JoeDoeSurvivor(v1())),
     ]);
 
+    const recursiveGenerateRandomPositiveNumber = (ultimoId: number): number => {
+      if (ultimoId <= 0) {
+        return recursiveGenerateRandomPositiveNumber(faker.random.number(20));
+      }
+      return ultimoId;
+    };
+
     await inventoryFakeDBAdapter.addItemToSurvivorInventory({
       ...itemsGenerated,
-      amount: faker.random.number(5),
+      amount: recursiveGenerateRandomPositiveNumber(faker.random.number(5)),
       survivor_id: joeDoe.id,
     });
 
