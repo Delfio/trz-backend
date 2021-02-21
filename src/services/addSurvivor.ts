@@ -1,5 +1,5 @@
 import { AddSurvivor, ISurvivor, SurvivorDTO } from '../domain';
-import { ISurvivorsAdapter } from '../adpters/database';
+import { ISurvivorsAdapter } from '../adpters';
 
 class AddSurvivorService implements AddSurvivor {
   constructor(private survivorAdapter: ISurvivorsAdapter) {}

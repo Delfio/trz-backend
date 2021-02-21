@@ -1,5 +1,5 @@
 import { ISurvivor } from '../../domain';
-import { ISurvivorsAdapter } from '../../adpters/database';
+import { ISurvivorsAdapter } from '../../adpters';
 
 class SurvivorDB implements ISurvivorsAdapter {
     private listOfSurvivors: ISurvivor[] = [];

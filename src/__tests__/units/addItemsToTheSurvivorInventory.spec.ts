@@ -3,21 +3,25 @@ import AddItemsToTheSurvivorInventory from '../../services/AddItemsToTheSurvivor
 import GetItemByIDService from '../../services/GetItemByID';
 import SuvivorFakeDBAdapter from '../mocks/SuvivorFakeDBAdapter';
 import ItemFakeDBAdapter from '../mocks/ItemFakeDBAdapter';
+import InventoryFakeDBAdapter from '../mocks/InventoryFakeDBAdapter';
 import { IItem, InventoryDTO, ISurvivor } from '../../domain';
 
 let addItemsToTheSurvivorInventory: AddItemsToTheSurvivorInventory;
 let suvivorFakeDBAdapter: SuvivorFakeDBAdapter;
 let getItemByIDService: GetItemByIDService;
 let itemFakeDBAdapter: ItemFakeDBAdapter;
+let inventoryFakeDBAdapter: InventoryFakeDBAdapter;
 
 describe('tests responsible for validating business rule related to adding items to the survivor inventory', () => {
   beforeEach(() => {
     itemFakeDBAdapter = new ItemFakeDBAdapter();
+    inventoryFakeDBAdapter = new InventoryFakeDBAdapter();
     getItemByIDService = new GetItemByIDService(itemFakeDBAdapter);
     suvivorFakeDBAdapter = new SuvivorFakeDBAdapter();
     addItemsToTheSurvivorInventory = new AddItemsToTheSurvivorInventory(
       suvivorFakeDBAdapter,
       getItemByIDService,
+      inventoryFakeDBAdapter,
     );
   });
 
