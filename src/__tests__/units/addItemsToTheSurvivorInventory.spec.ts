@@ -6,6 +6,7 @@ import ItemFakeDBAdapter from '../mocks/ItemFakeDBAdapter';
 import InventoryFakeDBAdapter from '../mocks/InventoryFakeDBAdapter';
 import { IItem, InventoryDTO } from '../../domain';
 import ultils from '../utils';
+import DomainError from '../../usecases/validations/DomainErro';
 
 const { JoeDoeSurvivor } = ultils;
 
@@ -65,7 +66,7 @@ describe('tests responsible for validating business rule related to adding items
     };
 
     await expect(addItemsToTheSurvivorInventory.execute(inventoryDTO))
-      .rejects.toBeInstanceOf(Error);
+      .rejects.toBeInstanceOf(DomainError);
   });
 
   it('should not be able to add item with in inventory if item not exists', async () => {
@@ -82,6 +83,6 @@ describe('tests responsible for validating business rule related to adding items
     };
 
     await expect(addItemsToTheSurvivorInventory.execute(inventoryDTO))
-      .rejects.toBeInstanceOf(Error);
+      .rejects.toBeInstanceOf(DomainError);
   });
 });

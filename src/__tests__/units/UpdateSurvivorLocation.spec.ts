@@ -3,6 +3,7 @@ import UpdateSurvivorLocation from '../../services/UpdateSurvivorLocation';
 import SuvivorFakeDBAdapter from '../mocks/SuvivorFakeDBAdapter';
 import { coords_of_survivor } from '../../domain';
 import utils from '../utils';
+import DomainError from '../../usecases/validations/DomainErro';
 
 const { JoeDoeSurvivor } = utils;
 let updateSurvivorLocation: UpdateSurvivorLocation;
@@ -47,6 +48,6 @@ describe('tests responsible for validating rules for changing the survivor locat
     await expect(updateSurvivorLocation
       .execute(JoeDoe.id, newCoordsOfSurvivor))
       .rejects
-      .toBeInstanceOf(Error);
+      .toBeInstanceOf(DomainError);
   });
 });

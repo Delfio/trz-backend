@@ -2,6 +2,7 @@ import {
   AddItemsToTheSurvivorInventory, IInventory, InventoryDTO, GetItemByID,
 } from '../domain';
 import { ISurvivorsAdapter, IInventoryAdapter } from '../adapters';
+import DomainError from '../usecases/validations/DomainErro';
 
 class AddItemsToTheSurvivorInventoryService implements AddItemsToTheSurvivorInventory {
   constructor(
@@ -23,14 +24,14 @@ class AddItemsToTheSurvivorInventoryService implements AddItemsToTheSurvivorInve
         this.getItemByID.execute(item_id),
       ],
     ).then((res) => res).catch((err) => {
-      throw new Error(`Error in adding item into inventory ${err}`);
+      throw new DomainError(`Error in adding item into inventory ${err}`);
     });
 
     if (!survivor) {
-      throw new Error('Error in adding item into inventory, survivor dont exists!');
+      throw new DomainError('Error in adding item into inventory, survivor dont exists!');
     }
     if (!item) {
-      throw new Error('Error in adding item into inventory, item dont exists!');
+      throw new DomainError('Error in adding item into inventory, item dont exists!');
     }
 
     await this.inventoryAdapter

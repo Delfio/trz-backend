@@ -2,6 +2,7 @@ import { v1 } from 'uuid';
 import FlagSurvivorAsInfectedService from '../../services/FlagSurvivorAsInfected';
 import SuvivorFakeDBAdapter from '../mocks/SuvivorFakeDBAdapter';
 import utils from '../utils';
+import DomainError from '../../usecases/validations/DomainErro';
 
 const { JoeDoeSurvivor } = utils;
 
@@ -56,7 +57,7 @@ describe('tests responsible for validating rules related to marking the survivor
     await expect(flagSurvivorAsInfectedService.execute(
       joeDoeTraitor.id,
       joeDoeSurvivor.id,
-    )).rejects.toBeInstanceOf(Error);
+    )).rejects.toBeInstanceOf(DomainError);
   });
 
   it('should there is validation if the survivor exists', async () => {
@@ -68,7 +69,7 @@ describe('tests responsible for validating rules related to marking the survivor
     await expect(
       flagSurvivorAsInfectedService
         .execute(joeDoeSurvivor.id, joeDoeSurvivor2.id),
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toBeInstanceOf(DomainError);
   });
 
   it('should there is validation of the survivor is already infected', async () => {
@@ -87,6 +88,6 @@ describe('tests responsible for validating rules related to marking the survivor
     await expect(flagSurvivorAsInfectedService.execute(
       joeDoeSurvivor.id,
       joeDoeTraitor.id,
-    )).rejects.toBeInstanceOf(Error);
+    )).rejects.toBeInstanceOf(DomainError);
   });
 });

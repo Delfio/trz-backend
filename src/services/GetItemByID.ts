@@ -1,5 +1,6 @@
 import { GetItemByID, IItem } from '../domain';
 import { IItemAdapter } from '../adapters/database/IItemAdapter';
+import DomainError from '../usecases/validations/DomainErro';
 
 class GetItemByIDService implements GetItemByID {
   constructor(private itemAdapter: IItemAdapter) {}
@@ -8,7 +9,7 @@ class GetItemByIDService implements GetItemByID {
     const itemExists = await this.itemAdapter.getItemById(item_id);
 
     if (!itemExists) {
-      throw new Error('item not exists !');
+      throw new DomainError('item not exists !');
     }
 
     return itemExists;

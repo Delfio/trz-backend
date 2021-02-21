@@ -1,5 +1,6 @@
 import { FlagSurvivorAsInfected, ISurvivor } from '../domain';
 import { ISurvivorsAdapter } from '../adapters';
+import DomainError from '../usecases/validations/DomainErro';
 
 // TODO -- add socket notify
 // TODO -- add list of lost items.
@@ -14,16 +15,16 @@ class FlagSurvivorAsInfectedService implements FlagSurvivorAsInfected {
     ]);
 
     if (!reporterSurvivor || !infectedSurvivor) {
-      throw new Error('Survivor dont exist!');
+      throw new DomainError('Survivor dont exist!');
     }
 
     if (infectedSurvivor.infected) {
-      throw new Error('Referent survivor is already infected!');
+      throw new DomainError('Referent survivor is already infected!');
     }
 
     // Extra rules
     if (reporterSurvivor.infected) {
-      throw new Error('An infected survivor cannot report another survivor! Leave us alone!');
+      throw new DomainError('An infected survivor cannot report another survivor! Leave us alone!');
     }
 
     const totalOfReports = await this.survivorsAdapter
