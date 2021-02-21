@@ -17,13 +17,76 @@ describe('tests responsible for validating rules related to marking the survivor
   it('should be able to add flag of infected into one survivor', async () => {
     expect.hasAssertions();
 
-    const joeDoe = JoeDoeSurvivor(v1());
-    await suvivorFakeDBAdapter.addSurvivor(joeDoe);
+    // 5 survivors needed to report an infected
+    const [infectedSurvivor, ...reporterUsers] = await Promise.all([
+      suvivorFakeDBAdapter.addSurvivor(JoeDoeSurvivor(v1())),
+      suvivorFakeDBAdapter.addSurvivor(JoeDoeSurvivor(v1())),
+      suvivorFakeDBAdapter.addSurvivor(JoeDoeSurvivor(v1())),
+      suvivorFakeDBAdapter.addSurvivor(JoeDoeSurvivor(v1())),
+      suvivorFakeDBAdapter.addSurvivor(JoeDoeSurvivor(v1())),
+      suvivorFakeDBAdapter.addSurvivor(JoeDoeSurvivor(v1())),
+    ]);
 
-    const survivorInfected = await flagSurvivorAsInfectedService.execute(joeDoe.id);
+    const reports = reporterUsers.map(
+      (reporter) => flagSurvivorAsInfectedService.execute(reporter.id, infectedSurvivor.id),
+    );
 
-    expect(survivorInfected).not.toBeUndefined();
-    expect(survivorInfected).not.toBeNull();
-    expect(survivorInfected.infected).toBe(true);
+    const resultOfReports = await Promise.all(reports);
+
+    const lastReportResult = resultOfReports[resultOfReports.length - 1];
+
+    expect(lastReportResult).not.toBeUndefined();
+    expect(lastReportResult).not.toBeNull();
+    expect(lastReportResult.infected).toBe(true);
+  });
+
+  it('an infected survivor cannot report another survivor', async () => {
+    expect.hasAssertions();
+
+    const joeDoeTraitor = JoeDoeSurvivor(v1());
+    const joeDoeSurvivor = JoeDoeSurvivor(v1());
+
+    joeDoeTraitor.infected = true;
+
+    await Promise.all([
+      suvivorFakeDBAdapter.addSurvivor(joeDoeTraitor),
+      suvivorFakeDBAdapter.addSurvivor(joeDoeSurvivor),
+    ]);
+
+    await expect(flagSurvivorAsInfectedService.execute(
+      joeDoeTraitor.id,
+      joeDoeSurvivor.id,
+    )).rejects.toBeInstanceOf(Error);
+  });
+
+  it('should there is validation if the survivor exists', async () => {
+    expect.hasAssertions();
+
+    const joeDoeSurvivor = JoeDoeSurvivor(v1());
+    const joeDoeSurvivor2 = JoeDoeSurvivor(v1());
+
+    await expect(
+      flagSurvivorAsInfectedService
+        .execute(joeDoeSurvivor.id, joeDoeSurvivor2.id),
+    ).rejects.toBeInstanceOf(Error);
+  });
+
+  it('should there is validation of the survivor is already infected', async () => {
+    expect.hasAssertions();
+
+    const joeDoeTraitor = JoeDoeSurvivor(v1());
+    const joeDoeSurvivor = JoeDoeSurvivor(v1());
+
+    joeDoeTraitor.infected = true;
+
+    await Promise.all([
+      suvivorFakeDBAdapter.addSurvivor(joeDoeTraitor),
+      suvivorFakeDBAdapter.addSurvivor(joeDoeSurvivor),
+    ]);
+
+    await expect(flagSurvivorAsInfectedService.execute(
+      joeDoeSurvivor.id,
+      joeDoeTraitor.id,
+    )).rejects.toBeInstanceOf(Error);
   });
 });

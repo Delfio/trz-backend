@@ -1,8 +1,10 @@
-import { ISurvivor } from '../../domain';
+import { ISurvivor, ISurvivorInfected } from '../../domain';
 import { ISurvivorsAdapter } from '../../adpters';
 
 class SurvivorDB implements ISurvivorsAdapter {
     private listOfSurvivors: ISurvivor[] = [];
+
+    private lstOfSurvivorsInfected: ISurvivorInfected[] = [];
 
     async addSurvivor(survivor: ISurvivor): Promise<ISurvivor> {
       this.listOfSurvivors.push(survivor);
@@ -30,6 +32,29 @@ class SurvivorDB implements ISurvivorsAdapter {
       this.listOfSurvivors[survivorIndex] = Survivor;
 
       return this.listOfSurvivors[survivorIndex];
+    }
+
+    async getAllInfectionReportsFromASurvivor(
+      referentSurvivor: ISurvivor,
+    ): Promise<ISurvivorInfected[]> {
+      return this.lstOfSurvivorsInfected.filter(
+        (reporter) => reporter.infected_survivor_id === referentSurvivor.id,
+      );
+    }
+
+    async reportSurvivorHasInfected(
+      survivorInfected: ISurvivor,
+      reporterSurvivor: ISurvivor,
+    ): Promise<ISurvivorInfected[]> {
+      this.lstOfSurvivorsInfected.push({
+        infected_survivor_id: survivorInfected.id,
+        reporter_survivor_id: reporterSurvivor.id,
+        survivor_infected_date: new Date(),
+      });
+
+      return this.lstOfSurvivorsInfected.filter(
+        (report) => report.infected_survivor_id === survivorInfected.id,
+      );
     }
 }
 

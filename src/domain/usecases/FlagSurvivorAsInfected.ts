@@ -1,5 +1,5 @@
 import { ISurvivor } from '../index';
 
 export interface FlagSurvivorAsInfected {
-    execute(survivor_id: string): Promise<ISurvivor>
+    execute(reporter_survivor_id: string, infected_survivor_id: string): Promise<ISurvivor>
 }
