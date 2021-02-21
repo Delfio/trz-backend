@@ -1,12 +1,12 @@
-import { v1 } from 'uuid';
 import RegisterNewSurvivor from '../../services/AddSurvivorAlongWithTheirStartingItems';
 import SurvivorFakeDBAdapter from '../mocks/SuvivorFakeDBAdapter';
 import InventoryFakeDBAdapter from '../mocks/InventoryFakeDBAdapter';
 import ItemFakeDBAdapter from '../mocks/ItemFakeDBAdapter';
 import { RegisterSurvivorWithStartingItemsDTO } from '../../domain';
 import util from '../utils';
+import DomainError from '../../usecases/validations/DomainErro';
 
-const { JoeDoeSurvivor, generateRandonInitialItems } = util;
+const { generateRandonInitialItems } = util;
 let registerNewSurvivor: RegisterNewSurvivor;
 let inventoryFakeDBAdapter: InventoryFakeDBAdapter;
 let itemFakeDBAdapter: ItemFakeDBAdapter;
@@ -72,5 +72,20 @@ describe('tests responsible for validating business rules aimed at the survivor'
       expect(itemsOfSurvivor
         .find((initialItem) => initialItem.item_id === itemOfJoe.item_id)).not.toBeUndefined();
     });
+  });
+
+  it('should not be able to register survivor with not exists items', async () => {
+    expect.hasAssertions();
+
+    const survivo: RegisterSurvivorWithStartingItemsDTO = {
+      initialInventory: [{
+        amount: 5,
+        item_id: 'item-not-exists!',
+      }],
+      survivor: defaultSurvivor(),
+    };
+
+    await expect(registerNewSurvivor.execute(survivo))
+      .rejects.toBeInstanceOf(DomainError);
   });
 });
