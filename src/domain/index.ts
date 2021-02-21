@@ -11,6 +11,7 @@ export * from './usecases/UpdateSurvivorLocation';
 export * from './usecases/FlagSurvivorAsInfected';
 export * from './usecases/GetAllInformationsOfSurvivor';
 export * from './usecases/GetItemOfSurvivorInventory';
+export * from './usecases/TradeItem';
 
 /* DTOs */
 export * from './DTO/SurvivorDTO';
