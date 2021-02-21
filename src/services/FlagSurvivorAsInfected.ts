@@ -1,5 +1,5 @@
 import { FlagSurvivorAsInfected, ISurvivor } from '../domain';
-import { ISurvivorsAdapter } from '../adpters';
+import { ISurvivorsAdapter } from '../adapters';
 
 // TODO -- add socket notify
 // TODO -- add list of lost items.

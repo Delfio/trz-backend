@@ -1,5 +1,5 @@
 import { GetItemByID, IItem } from '../domain';
-import { IItemAdapter } from '../adpters/database/IItemAdapter';
+import { IItemAdapter } from '../adapters/database/IItemAdapter';
 
 class GetItemByIDService implements GetItemByID {
   constructor(private itemAdapter: IItemAdapter) {}

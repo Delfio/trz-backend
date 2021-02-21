@@ -1,4 +1,4 @@
-import { IInventoryAdapter } from '../../adpters';
+import { IInventoryAdapter } from '../../adapters';
 import { IInventory, IItem, ISurvivor } from '../../domain';
 
 class IInventoryFakeDBAdapter implements IInventoryAdapter {

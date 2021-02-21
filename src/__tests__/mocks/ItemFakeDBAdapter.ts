@@ -1,4 +1,4 @@
-import { IItemAdapter } from '../../adpters';
+import { IItemAdapter } from '../../adapters';
 import { IItem } from '../../domain';
 
 class ItemAdapterFakeDB implements IItemAdapter {

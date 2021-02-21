@@ -1,5 +1,5 @@
 import { ISurvivor, ISurvivorInfected } from '../../domain';
-import { ISurvivorsAdapter } from '../../adpters';
+import { ISurvivorsAdapter } from '../../adapters';
 
 class SurvivorDB implements ISurvivorsAdapter {
     private listOfSurvivors: ISurvivor[] = [];

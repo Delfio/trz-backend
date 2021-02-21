@@ -1,5 +1,5 @@
 import { UpdateSurvivorLocation, ISurvivor, coords_of_survivor } from '../domain';
-import { ISurvivorsAdapter } from '../adpters';
+import { ISurvivorsAdapter } from '../adapters';
 
 class UpdateSurvivorLocationService implements UpdateSurvivorLocation {
   constructor(private survivorsAdapter: ISurvivorsAdapter) {}
