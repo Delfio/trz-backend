@@ -5,6 +5,7 @@ import ItemFakeDBAdapter from '../mocks/ItemFakeDBAdapter';
 import SuvivorFakeDBAdapter from '../mocks/SuvivorFakeDBAdapter';
 import GetItemOfSurvivorInventory from '../../services/GetItemOfSurvivorInventory';
 import utils from '../utils';
+import DomainErro from '../../usecases/validations/DomainErro';
 
 const { JoeDoeSurvivor, generateRandonInitialItems } = utils;
 let inventoryFakeDBAdapter: InventoryFakeDBAdapter;
@@ -32,6 +33,7 @@ describe('tests responsible for validating access to an item in a survivor inven
 
     return randomItems;
   }
+
   it('survivor should be able to get one item of your inventory', async () => {
     expect.hasAssertions();
 
@@ -53,7 +55,58 @@ describe('tests responsible for validating access to an item in a survivor inven
     expect(item.item).toStrictEqual(itemsGenerated);
   });
 
-  it.todo('should not be able to access inventory of survivor not registered');
-  it.todo('should not be able to access inventory of infected survivor');
-  it.todo('should not be able to access of item if item not registered into inventory of this survivor');
+  it('should not be able to access inventory of survivor not registered', async () => {
+    expect.hasAssertions();
+
+    const joeDoeSurvivor = JoeDoeSurvivor(v1());
+
+    const [[itemsGenerated]] = await Promise.all([
+      GenerateInitialData(2),
+    ]);
+
+    await expect(getItemOfSurvivorInventory.execute(joeDoeSurvivor.id, itemsGenerated.item_id))
+      .rejects.toBeInstanceOf(DomainErro);
+  });
+
+  it('should not be able to access inventory of infected survivor', async () => {
+    expect.hasAssertions();
+
+    const [[itemsGenerated], joeDoe] = await Promise.all([
+      GenerateInitialData(5),
+      suvivorFakeDBAdapter.addSurvivor({
+        ...JoeDoeSurvivor(v1()),
+        infected: true,
+      }),
+    ]);
+
+    await inventoryFakeDBAdapter.addItemToSurvivorInventory(
+      itemsGenerated,
+      joeDoe,
+      faker.random.number(5),
+    );
+
+    await expect(getItemOfSurvivorInventory.execute(joeDoe.id, itemsGenerated.item_id))
+      .rejects.toBeInstanceOf(DomainErro);
+  });
+
+  it('should not be able to access of item if item not registered into inventory of this survivor', async () => {
+    expect.hasAssertions();
+
+    const [[itemsGenerated], joeDoe] = await Promise.all([
+      GenerateInitialData(5),
+      suvivorFakeDBAdapter.addSurvivor(JoeDoeSurvivor(v1())),
+    ]);
+
+    await expect(getItemOfSurvivorInventory.execute(joeDoe.id, itemsGenerated.item_id))
+      .rejects.toBeInstanceOf(DomainErro);
+  });
+
+  it('should not be able to access of item into survivor inventory if it not exists', async () => {
+    expect.hasAssertions();
+
+    const joeDoe = await suvivorFakeDBAdapter.addSurvivor(JoeDoeSurvivor(v1()));
+
+    await expect(getItemOfSurvivorInventory.execute(joeDoe.id, 'item_does_exists_zzz'))
+      .rejects.toBeInstanceOf(DomainErro);
+  });
 });
