@@ -7,6 +7,8 @@ export * from './models/IInventory';
 export * from './usecases/AddSurvivor';
 export * from './usecases/AddItemsToTheSurvivorInventory';
 export * from './usecases/GetItemByID';
+export * from './usecases/UpdateSurvivorLocation';
+export * from './usecases/FlagSurvivorAsInfected';
 
 /* DTOs */
 export * from './DTO/SurvivorDTO';

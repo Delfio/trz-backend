@@ -21,6 +21,16 @@ class SurvivorDB implements ISurvivorsAdapter {
         this.listOfSurvivors.push(survivorExists);
       }
     }
+
+    async updateSurvivor(Survivor: ISurvivor): Promise<ISurvivor> {
+      const survivorIndex = this.listOfSurvivors.findIndex(
+        (survivor) => survivor.id === Survivor.id,
+      );
+
+      this.listOfSurvivors[survivorIndex] = Survivor;
+
+      return this.listOfSurvivors[survivorIndex];
+    }
 }
 
 export default SurvivorDB;
