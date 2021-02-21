@@ -1,7 +1,6 @@
 import { v1 } from 'uuid';
 import faker from 'faker';
-import * as Yup from 'yup';
-import AppError from '../../main/usecase/AppError';
+import AppError from '../../main/usecase/MainErros';
 import { SurvivorController } from '../../main/controllers/SurvivorController';
 import SuvivorFakeDBAdapter from '../mocks/SuvivorFakeDBAdapter';
 import ItemFakeDBAdapter from '../mocks/ItemFakeDBAdapter';
@@ -111,5 +110,21 @@ describe('tests responsible for validating the entire survivor rule', () => {
     const allSurvivors = await survivorController.index();
 
     expect(allSurvivors).toHaveLength(totalOfRegistredSurvivors);
+  });
+
+  it('should not be able to register item into survivor inventory if item not exists', async () => {
+    expect.hasAssertions();
+
+    const basicInformationWithAFakeItem: AddSurvivorWithInitialBasicItems = {
+      initialInventory: [{
+        item_id: 'item dont exists!',
+        amount: 1,
+      }],
+      survivor: JoeDoeSurvivor(v1()),
+    };
+
+    await expect(survivorController.store(basicInformationWithAFakeItem))
+      .rejects
+      .toBeInstanceOf(AppError);
   });
 });

@@ -5,7 +5,8 @@ import AddSurvivor from '../../services/AddSurvivor';
 import AddItemsToTheSurvivorInventory from '../../services/AddItemsToTheSurvivorInventory';
 import GetItemByID from '../../services/GetItemByID';
 import { AddSurvivorWithInitialBasicItems } from '../adapters/AddSurvivorWithInitialBasicItems';
-import AppError from '../usecase/AppError';
+import AppError from '../usecase/MainErros';
+import DomainErrors from '../../usecases/validations/DomainErro';
 
 export class SurvivorController {
   constructor(
@@ -63,7 +64,12 @@ export class SurvivorController {
       if (error instanceof Yup.ValidationError) {
         throw new AppError(`check the registration information ${error}`, 403);
       }
-      throw new AppError(`Error when registering a survivor, ${error}`);
+
+      if (error instanceof DomainErrors) {
+        throw new AppError('insufficient information for registration, please check your request', 406);
+      }
+
+      throw error;
     }
   }
 }
