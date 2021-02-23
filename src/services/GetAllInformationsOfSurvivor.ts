@@ -12,50 +12,54 @@ class GetAllInformationsOfSurvivorService implements GetAllInformationsOfSurvivo
   }
 
   async execute(survivor_id: string): Promise<ISurvivor> {
-    const validSurvivor = await this.survivorsAdapter.getSurvivor(survivor_id);
+    try {
+      const validSurvivor = await this.survivorsAdapter.getSurvivor(survivor_id);
 
-    if (!validSurvivor) {
-      throw new DomainErro('Survivor not exists!');
-    }
+      if (!validSurvivor) {
+        throw new DomainErro('Survivor not exists!');
+      }
 
-    if (validSurvivor.infected) {
-      throw new DomainErro('Infected survivor, your items are inaccessible!');
-    }
+      if (validSurvivor.infected) {
+        throw new DomainErro('Infected survivor, your items are inaccessible!');
+      }
 
-    const survivorInventory = await this.inventoryAdapter
-      .getAllItensIntoSurvivorInventory(validSurvivor.id);
+      const survivorInventory = await this.inventoryAdapter
+        .getAllItensIntoSurvivorInventory(validSurvivor.id);
 
-    if (survivorInventory.length === 0) {
-      return {
-        ...validSurvivor,
-        suvivor_inventory: [] as IInventory[],
-      };
-    }
-
-    const PromisseOfAllItemsInTheSurvivorInventory = survivorInventory
-      .map((item) => this.itemAdapter.getItemById(item.item_id));
-
-    const AllItemsInTheSurvivorInventory = await Promise
-      .all(PromisseOfAllItemsInTheSurvivorInventory);
-
-    const inventoryFormated = survivorInventory.map((inventory) => {
-      const itemOfInventory = AllItemsInTheSurvivorInventory
-        .find((item) => item?.item_id === inventory.item_id);
-
-      if (itemOfInventory) {
+      if (survivorInventory.length === 0) {
         return {
-          ...inventory,
-          item: itemOfInventory,
+          ...validSurvivor,
+          suvivor_inventory: [] as IInventory[],
         };
       }
 
-      return inventory;
-    });
+      const PromisseOfAllItemsInTheSurvivorInventory = survivorInventory
+        .map((item) => this.itemAdapter.getItemById(item.item_id));
 
-    return {
-      ...validSurvivor,
-      suvivor_inventory: inventoryFormated,
-    };
+      const AllItemsInTheSurvivorInventory = await Promise
+        .all(PromisseOfAllItemsInTheSurvivorInventory);
+
+      const inventoryFormated = survivorInventory.map((inventory) => {
+        const itemOfInventory = AllItemsInTheSurvivorInventory
+          .find((item) => item?.item_id === inventory.item_id);
+
+        if (itemOfInventory) {
+          return {
+            ...inventory,
+            item: itemOfInventory,
+          };
+        }
+
+        return inventory;
+      });
+
+      return {
+        ...validSurvivor,
+        suvivor_inventory: inventoryFormated,
+      };
+    } catch (error) {
+      throw new DomainErro(`Invalid information ${error.message}!`);
+    }
   }
 }
 

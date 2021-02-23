@@ -1,7 +1,7 @@
 import { v1 } from 'uuid';
 import faker from 'faker';
 import AppError from '../../main/usecase/MainErros';
-import { SurvivorController } from '../../main/controllers/SurvivorController';
+import { SurvivorController } from '../../main/controllers/SurvivorControllerAdapter';
 import SuvivorFakeDBAdapter from '../mocks/SuvivorFakeDBAdapter';
 import ItemFakeDBAdapter from '../mocks/ItemFakeDBAdapter';
 import InventoryFakeDBAdapter from '../mocks/InventoryFakeDBAdapter';
@@ -61,10 +61,8 @@ describe('tests responsible for validating the entire survivor rule', () => {
       }],
       survivor: {
         age: 0,
-        lastLocation: {
-          latitude: 0,
-          longitude: 0,
-        },
+        latitude: 0,
+        longitude: 0,
         name: '',
       },
     };
@@ -85,10 +83,8 @@ describe('tests responsible for validating the entire survivor rule', () => {
     const registerSurvivors = totalSurvivors.map((_) => suvivorFakeDBAdapter.addSurvivor({
       ...JoeDoeSurvivor(v1()),
       name: faker.name.firstName(),
-      lastLocation: {
-        latitude: Number(faker.address.latitude()),
-        longitude: Number(faker.address.longitude()),
-      },
+      latitude: Number(faker.address.latitude()),
+      longitude: Number(faker.address.longitude()),
     }));
 
     await Promise.all(registerSurvivors);

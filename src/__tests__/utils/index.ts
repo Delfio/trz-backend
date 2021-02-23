@@ -7,10 +7,8 @@ export default {
     age: 19,
     id,
     infected: false,
-    lastLocation: {
-      latitude: -55.5555,
-      longitude: 55.5555,
-    },
+    latitude: -55.5555,
+    longitude: 55.5555,
     name: 'Joe Doe',
   }),
 

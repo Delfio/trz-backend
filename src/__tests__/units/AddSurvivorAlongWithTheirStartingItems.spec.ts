@@ -28,10 +28,8 @@ describe('tests responsible for validating business rules aimed at the survivor'
     return {
       name: 'Joeh Doe',
       age: 19,
-      lastLocation: {
-        latitude: -55.5555,
-        longitude: 55.5555,
-      },
+      latitude: -55.5555,
+      longitude: 55.5555,
     };
   }
 

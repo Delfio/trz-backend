@@ -15,7 +15,9 @@ export interface ISurvivorsAdapter {
         reporterSurvivor: ISurvivor): Promise<ISurvivorInfected[]>;
 
     getAllInfectionReportsFromASurvivor(
-        referentSurvivor: ISurvivor): Promise<ISurvivorInfected[]>
+        referentSurvivor: ISurvivor): Promise<ISurvivorInfected[]>;
+
+    getAllSurvivorInfected(): Promise<ISurvivor[]>;
 
     updateSurvivor(Survivor: ISurvivor): Promise<ISurvivor>
 }

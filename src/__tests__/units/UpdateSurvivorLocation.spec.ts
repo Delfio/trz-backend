@@ -1,7 +1,6 @@
 import { v1 } from 'uuid';
 import UpdateSurvivorLocation from '../../services/UpdateSurvivorLocation';
 import SuvivorFakeDBAdapter from '../mocks/SuvivorFakeDBAdapter';
-import { coords_of_survivor } from '../../domain';
 import utils from '../utils';
 import DomainError from '../../usecases/validations/DomainErro';
 
@@ -24,7 +23,7 @@ describe('tests responsible for validating rules for changing the survivor locat
 
     expect(survivor).not.toBeUndefined();
 
-    const newCoordsOfSurvivor: coords_of_survivor = {
+    const newCoordsOfSurvivor = {
       latitude: -44.0021,
       longitude: 44.0021,
     };
@@ -32,7 +31,15 @@ describe('tests responsible for validating rules for changing the survivor locat
     const updatedSurvivor = await updateSurvivorLocation
       .execute(survivor.id, newCoordsOfSurvivor);
 
-    expect(updatedSurvivor.lastLocation).toStrictEqual(newCoordsOfSurvivor);
+    const {
+      latitude,
+      longitude,
+    } = updatedSurvivor;
+
+    expect({
+      latitude,
+      longitude,
+    }).toStrictEqual(newCoordsOfSurvivor);
   });
 
   it('should be not able to update survivor location if survivor does not exists', async () => {
@@ -40,7 +47,7 @@ describe('tests responsible for validating rules for changing the survivor locat
 
     const JoeDoe = JoeDoeSurvivor(v1());
 
-    const newCoordsOfSurvivor: coords_of_survivor = {
+    const newCoordsOfSurvivor = {
       latitude: -44.0021,
       longitude: 44.0021,
     };

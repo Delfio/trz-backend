@@ -6,13 +6,17 @@ class GetItemByIDService implements GetItemByID {
   constructor(private itemAdapter: IItemAdapter) {}
 
   async execute(item_id: string): Promise<IItem> {
-    const itemExists = await this.itemAdapter.getItemById(item_id);
+    try {
+      const itemExists = await this.itemAdapter.getItemById(item_id);
 
-    if (!itemExists) {
-      throw new DomainError('item not exists !');
+      if (!itemExists) {
+        throw new DomainError('item not exists !');
+      }
+
+      return itemExists;
+    } catch (error) {
+      throw new DomainError(`Invalid Information ${error.message}`);
     }
-
-    return itemExists;
   }
 }
 

@@ -18,38 +18,41 @@ implements AddSurvivorAlongWithTheirStartingItems {
       initialInventory,
       survivor,
     } = data;
+    try {
+      const itensExists = await Promise.all(
+        initialInventory.map((item) => this.itemAdapter.getItemById(item.item_id)),
+      );
 
-    const itensExists = await Promise.all(
-      initialInventory.map((item) => this.itemAdapter.getItemById(item.item_id)),
-    );
+      itensExists.forEach((item) => {
+        if (!item) {
+          throw new DomainError('Item not registered!');
+        }
+      });
 
-    itensExists.forEach((item) => {
-      if (!item) {
-        throw new DomainError('Item not registered!');
-      }
-    });
+      const newSurvivor = await this.survivorAdapter.addSurvivor({
+        ...survivor,
+        infected: false,
+        id: v4(),
+      });
 
-    const newSurvivor = await this.survivorAdapter.addSurvivor({
-      ...survivor,
-      infected: false,
-      id: v4(),
-    });
+      await Promise.all(initialInventory.map(
+        (item) => this.inventoryAdapter
+          .addItemToSurvivorInventory({
+            ...item,
+            survivor_id: newSurvivor.id,
+          }),
+      ));
 
-    await Promise.all(initialInventory.map(
-      (item) => this.inventoryAdapter
-        .addItemToSurvivorInventory({
-          ...item,
-          survivor_id: newSurvivor.id,
-        }),
-    ));
+      const newSurvivorInventory = await this.inventoryAdapter
+        .getAllItensIntoSurvivorInventory(newSurvivor.id);
 
-    const newSurvivorInventory = await this.inventoryAdapter
-      .getAllItensIntoSurvivorInventory(newSurvivor.id);
-
-    return {
-      ...newSurvivor,
-      suvivor_inventory: newSurvivorInventory,
-    };
+      return {
+        ...newSurvivor,
+        suvivor_inventory: newSurvivorInventory,
+      };
+    } catch (error) {
+      throw new DomainError(`Invalid information ${error.message}!`);
+    }
   }
 }
 
