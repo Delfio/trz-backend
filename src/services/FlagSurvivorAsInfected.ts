@@ -1,3 +1,4 @@
+import { SimpleConsoleLogger } from 'typeorm';
 import { FlagSurvivorAsInfected, ISurvivor } from '../domain';
 import { ISurvivorsAdapter } from '../adapters';
 import DomainError from '../usecases/validations/DomainErro';
@@ -23,21 +24,37 @@ class FlagSurvivorAsInfectedService implements FlagSurvivorAsInfected {
         throw new DomainError('Referent survivor is already infected!');
       }
 
-      // Extra rules
       if (reporterSurvivor.infected) {
         throw new DomainError('An infected survivor cannot report another survivor! Leave us alone!');
       }
 
-      const totalOfReports = await this.survivorsAdapter
+      let totalOfReports = await this.survivorsAdapter
+        .getAllInfectionReportsFromASurvivor(infectedSurvivor);
+
+      const allItemsOfRepot = await Promise.all(
+        totalOfReports.map((report) => report.reporter_survivor_id),
+      );
+
+      const isRepeatedReporting = allItemsOfRepot
+        .find((survivor_id) => survivor_id === reporter_survivor_id);
+
+      if (isRepeatedReporting) {
+        throw new DomainError('previously computerized report!');
+      }
+
+      totalOfReports = await this.survivorsAdapter
         .reportSurvivorHasInfected(infectedSurvivor, reporterSurvivor);
 
       if (totalOfReports.length >= 5) {
         infectedSurvivor.infected = true;
+        delete infectedSurvivor.suvivor_inventory;
+
+        return this.survivorsAdapter.updateSurvivor(infectedSurvivor);
       }
 
-      return this.survivorsAdapter.updateSurvivor(infectedSurvivor);
+      return reporterSurvivor;
     } catch (error) {
-      throw new DomainError(`Invalid information ${error.message}!`);
+      throw new DomainError(error.message);
     }
   }
 }

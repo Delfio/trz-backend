@@ -26,10 +26,11 @@ describe('tests responsible for validating rules for changing the survivor locat
     const newCoordsOfSurvivor = {
       latitude: -44.0021,
       longitude: 44.0021,
+      survivor_id: survivor.id,
     };
 
     const updatedSurvivor = await updateSurvivorLocation
-      .execute(survivor.id, newCoordsOfSurvivor);
+      .execute(newCoordsOfSurvivor);
 
     const {
       latitude,
@@ -39,7 +40,10 @@ describe('tests responsible for validating rules for changing the survivor locat
     expect({
       latitude,
       longitude,
-    }).toStrictEqual(newCoordsOfSurvivor);
+    }).toStrictEqual({
+      latitude: newCoordsOfSurvivor.latitude,
+      longitude: newCoordsOfSurvivor.longitude,
+    });
   });
 
   it('should be not able to update survivor location if survivor does not exists', async () => {
@@ -50,10 +54,11 @@ describe('tests responsible for validating rules for changing the survivor locat
     const newCoordsOfSurvivor = {
       latitude: -44.0021,
       longitude: 44.0021,
+      survivor_id: JoeDoe.id,
     };
 
     await expect(updateSurvivorLocation
-      .execute(JoeDoe.id, newCoordsOfSurvivor))
+      .execute(newCoordsOfSurvivor))
       .rejects
       .toBeInstanceOf(DomainError);
   });

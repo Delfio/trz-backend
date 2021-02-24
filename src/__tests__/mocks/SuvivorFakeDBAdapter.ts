@@ -12,6 +12,12 @@ class SurvivorDB implements ISurvivorsAdapter {
       return survivor;
     }
 
+    async getSurvivorsWithTheirCompleteInventory(
+      survivorId: string,
+    ): Promise<ISurvivor | undefined> {
+      return this.listOfSurvivors.find((survivor) => survivor.id === survivorId);
+    }
+
     async getSurvivor(survivorId: string): Promise<ISurvivor | undefined> {
       return this.listOfSurvivors.find((survivor) => survivor.id === survivorId);
     }

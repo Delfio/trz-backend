@@ -8,6 +8,8 @@ export interface ISurvivorsAdapter {
 
     getSurvivor(survivorId: string): Promise<ISurvivor | undefined>;
 
+    getSurvivorsWithTheirCompleteInventory(survivorId: string): Promise<ISurvivor | undefined>
+
     deleteSurvivor(survivorId: string): Promise<void>;
 
     reportSurvivorHasInfected(

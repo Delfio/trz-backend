@@ -20,8 +20,6 @@ describe('tests responsible for validating access to the inventory', () => {
     itemFakeDBAdapter = new ItemFakeDBAdapter();
     suvivorFakeDBAdapter = new SuvivorFakeDBAdapter();
     getAllInformationsOfSurvivor = new GetAllInformationsOfSurvivor(
-      inventoryFakeDBAdapter,
-      itemFakeDBAdapter,
       suvivorFakeDBAdapter,
     );
   });
@@ -34,42 +32,6 @@ describe('tests responsible for validating access to the inventory', () => {
 
     return randomItems;
   }
-  it('must be possible to return the complete profile the survivor', async () => {
-    expect.hasAssertions();
-
-    const totalItensOfSurvivorInventoryLength = 5;
-    const totalItemsLenght = 10;
-
-    const totalItensOfSurvivorInventory = Array.from({
-      length: totalItensOfSurvivorInventoryLength,
-    }, (_, index) => index);
-
-    const joeDoeSurvivor = JoeDoeSurvivor(v1());
-
-    const randomItems = await GenerateInitialData(totalItemsLenght);
-    await suvivorFakeDBAdapter.addSurvivor(joeDoeSurvivor);
-
-    const recursiveGenerateRandomPositiveNumber = (ultimoId: number): number => {
-      if (ultimoId <= 0) {
-        return recursiveGenerateRandomPositiveNumber(faker.random.number(20));
-      }
-      return ultimoId;
-    };
-
-    await Promise
-      .all(totalItensOfSurvivorInventory
-        .map((index) => inventoryFakeDBAdapter.addItemToSurvivorInventory({
-          amount: recursiveGenerateRandomPositiveNumber(faker.random.number(5)),
-          ...randomItems[index],
-          survivor_id: joeDoeSurvivor.id,
-        })));
-
-    const allItemsassignedToTheSurvivorInventory = await getAllInformationsOfSurvivor
-      .execute(joeDoeSurvivor.id);
-
-    expect(allItemsassignedToTheSurvivorInventory.suvivor_inventory)
-      .toHaveLength(totalItensOfSurvivorInventoryLength);
-  });
 
   it('hope an infected survivor does have access to your inventory', async () => {
     expect.hasAssertions();

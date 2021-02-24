@@ -26,6 +26,14 @@ export class SurvivorRepository implements ISurvivorsAdapter {
       return this.survivorRepository.findOne(survivorId);
     }
 
+    async getSurvivorsWithTheirCompleteInventory(
+      survivorId: string,
+    ): Promise<ISurvivor | undefined> {
+      return this.survivorRepository.findOne(survivorId, {
+        relations: ['suvivor_inventory'],
+      });
+    }
+
     async deleteSurvivor(survivorId: string): Promise<void> {
       await this.survivorRepository.delete(survivorId);
     }
@@ -53,9 +61,9 @@ export class SurvivorRepository implements ISurvivorsAdapter {
     ): Promise<ISurvivorInfected[]> {
       return this.survivorInfectedRepository.find({
         where: {
-          id: referentSurvivor.id,
+          infected_survivor_id: referentSurvivor.id,
         },
-        relations: ['infected'],
+        relations: ['infected_survivor_id'],
       });
     }
 

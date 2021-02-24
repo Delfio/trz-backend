@@ -15,6 +15,8 @@ export * from './usecases/TradeItem';
 
 /* DTOs */
 export * from './DTO/SurvivorDTO';
+export * from './DTO/TradeItemDTO';
 export * from './DTO/InventoryDTO';
+export * from './DTO/UpdateSurvivorLocationDTO';
 export * from './DTO/RegisterSurvivorWithStartingItemsDTO';
 export * from './DTO/SurvivorInfectedDTO';
