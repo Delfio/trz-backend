@@ -1,2 +1,4 @@
 export * from './SurvivorControllerAdapter';
-export * from './SurvivorInfectedController';
+export * from './SurvivorInfectedControllerAdapter';
+export * from './ItemControllerAdapter';
+export * from './TradeControllerAdapter';

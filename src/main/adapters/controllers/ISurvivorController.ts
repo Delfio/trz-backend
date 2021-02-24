@@ -1,4 +1,4 @@
-import { ISurvivor, RegisterSurvivorWithStartingItemsDTO } from '../../../domain';
+import { ISurvivor, RegisterSurvivorWithStartingItemsDTO, UpdateSurvivorLocationDTO } from '../../../domain';
 import { ISurvivorsAdapter, IItemAdapter, IInventoryAdapter } from '../../../adapters';
 
 export abstract class ISurvivorController {
@@ -13,4 +13,6 @@ export abstract class ISurvivorController {
   abstract store(data: RegisterSurvivorWithStartingItemsDTO): Promise<ISurvivor>
 
   abstract show(survivor_id: string): Promise<ISurvivor | undefined>
+
+  abstract update(data: UpdateSurvivorLocationDTO): Promise<ISurvivor | undefined>
 }
