@@ -39,7 +39,9 @@
             }
         ],
         "no-useless-constructor": "off",
+        "no-await-in-loop": "off",
         "class-methods-use-this": "off",
+        "no-restricted-syntax": "off",
         "jest/no-hooks": "off",
         "jest/no-conditional-expect": "off",
         "import/prefer-default-export": "off"
