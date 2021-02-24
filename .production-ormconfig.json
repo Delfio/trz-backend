@@ -1,0 +1,20 @@
+[
+    {
+        "name": "default",
+        "type" : "postgres",
+        "host": "postgresDB",
+        "port": 5432,
+        "username": "postgres",
+        "password": "123456",
+        "database": "trz_database",
+        "entities": [
+          "./dist/usecases/typeorm/entities/*.js"
+        ],
+        "migrations": [
+          "./dist/usecases/typeorm/migrations/*.js"
+        ],
+        "cli": {
+          "migrationsDir":  "./src/usecases/typeorm/migrations"
+        }
+    }
+]

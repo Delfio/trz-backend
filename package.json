@@ -7,7 +7,11 @@
   "scripts": {
     "dev": "ts-node-dev --transpile-only --ignore-watch node_modulest src/main/server.ts",
     "test": "jest --watch --no-cache",
-    "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js"
+    "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
+    "typeorm-prodction": "./node_modules/typeorm/cli.js",
+    "build": "node prepareProductionFiles.js && tsc -p tsconfig-build.json",
+    "posbuild": "npm run typeorm-prodction migration:run && npm run server",
+    "server": "node ./dist/main/server.js"
   },
   "keywords": [],
   "author": "Delfio",
