@@ -2,9 +2,13 @@ import {
   Entity,
   Column,
   PrimaryColumn,
+  OneToMany,
+  JoinTable,
 } from 'typeorm';
 
 import { ISurvivor } from '../../../domain';
+
+import { SurvivorInventoryEntity } from './SurvivorInventory';
 
 @Entity('tbl_survivor')
 export class SurvivorEntity implements ISurvivor {
@@ -25,4 +29,12 @@ export class SurvivorEntity implements ISurvivor {
 
     @Column('real')
     longitude!: number;
+
+    @OneToMany(() => SurvivorInventoryEntity,
+      (survivorInventoryEntity) => survivorInventoryEntity.survivor_id, {
+        lazy: true,
+        persistence: false,
+      })
+    @JoinTable({ name: 'inventory' })
+    suvivor_inventory!: SurvivorInventoryEntity[]
 }
