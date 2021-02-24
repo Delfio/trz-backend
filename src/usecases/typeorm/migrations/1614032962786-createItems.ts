@@ -1,4 +1,5 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import getInitialItems from '../../../utils/getInitialItems.js';
 
 export default class createItems1614032962786 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -30,6 +31,9 @@ export default class createItems1614032962786 implements MigrationInterface {
         ],
       }),
     );
+
+    const allItens = await getInitialItems();
+    await queryRunner.query(allItens);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

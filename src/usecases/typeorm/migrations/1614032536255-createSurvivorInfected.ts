@@ -1,5 +1,5 @@
 import {
-  MigrationInterface, QueryRunner, Table, TableForeignKey,
+  MigrationInterface, QueryRunner, Table,
 } from 'typeorm';
 
 export default class createSurvivorInfected1614032536255 implements MigrationInterface {
