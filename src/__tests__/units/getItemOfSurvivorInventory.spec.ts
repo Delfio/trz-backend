@@ -2,7 +2,7 @@ import { v1 } from 'uuid';
 import faker from 'faker';
 import InventoryFakeDBAdapter from '../mocks/InventoryFakeDBAdapter';
 import ItemFakeDBAdapter from '../mocks/ItemFakeDBAdapter';
-import SuvivorFakeDBAdapter from '../mocks/SuvivorFakeDBAdapter';
+import SuvivorFakeDBAdapter from '../mocks/SurvivorFakeDBAdapter';
 import GetItemOfSurvivorInventory from '../../services/GetItemOfSurvivorInventory';
 import utils from '../utils';
 import DomainErro from '../../usecases/validations/DomainErro';

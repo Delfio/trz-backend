@@ -2,14 +2,15 @@ import { v1 } from 'uuid';
 import faker from 'faker';
 import AppError from '../../main/usecase/MainErros';
 import { SurvivorController } from '../../main/controllers/SurvivorControllerAdapter';
-import SuvivorFakeDBAdapter from '../mocks/SuvivorFakeDBAdapter';
+import SurvivorFakeDBAdapter from '../mocks/SurvivorFakeDBAdapter';
 import ItemFakeDBAdapter from '../mocks/ItemFakeDBAdapter';
 import InventoryFakeDBAdapter from '../mocks/InventoryFakeDBAdapter';
 import { RegisterSurvivorWithStartingItemsDTO } from '../../domain';
 import utils from '../utils';
+import DomainErros from '../../usecases/validations/DomainErro';
 
 const { JoeDoeSurvivor, generateRandonInitialItems } = utils;
-let suvivorFakeDBAdapter: SuvivorFakeDBAdapter;
+let survivorFakeDBAdapter: SurvivorFakeDBAdapter;
 let survivorController: SurvivorController;
 let inventoryFakeDBAdapter: InventoryFakeDBAdapter;
 let itemFakeDBAdapter: ItemFakeDBAdapter;
@@ -18,9 +19,9 @@ describe('tests responsible for validating the entire survivor rule', () => {
   beforeEach(() => {
     inventoryFakeDBAdapter = new InventoryFakeDBAdapter();
     itemFakeDBAdapter = new ItemFakeDBAdapter();
-    suvivorFakeDBAdapter = new SuvivorFakeDBAdapter();
+    survivorFakeDBAdapter = new SurvivorFakeDBAdapter();
     survivorController = new SurvivorController(
-      suvivorFakeDBAdapter,
+      survivorFakeDBAdapter,
       itemFakeDBAdapter,
       inventoryFakeDBAdapter,
     );
@@ -80,7 +81,7 @@ describe('tests responsible for validating the entire survivor rule', () => {
       length: totalOfRegistredSurvivors,
     }, (_, index) => index);
 
-    const registerSurvivors = totalSurvivors.map((_) => suvivorFakeDBAdapter.addSurvivor({
+    const registerSurvivors = totalSurvivors.map((_) => survivorFakeDBAdapter.addSurvivor({
       ...JoeDoeSurvivor(v1()),
       name: faker.name.firstName(),
       latitude: Number(faker.address.latitude()),
@@ -108,5 +109,25 @@ describe('tests responsible for validating the entire survivor rule', () => {
     await expect(survivorController.store(basicInformationWithAFakeItem))
       .rejects
       .toBeInstanceOf(AppError);
+  });
+
+  it('must be possible to return a survivor, according to his id', async () => {
+    expect.hasAssertions();
+
+    const JoeDoesurvivor = JoeDoeSurvivor(v1());
+
+    await survivorFakeDBAdapter.addSurvivor(JoeDoesurvivor);
+
+    const survivor = await survivorController.show(JoeDoesurvivor.id);
+
+    expect(survivor).toStrictEqual(JoeDoesurvivor);
+  });
+
+  it('should not be able to return data if not exists survivor', async () => {
+    expect.hasAssertions();
+
+    const JoeDoesurvivor = JoeDoeSurvivor(v1());
+
+    await expect(survivorController.show(JoeDoesurvivor.id)).rejects.toBeInstanceOf(DomainErros);
   });
 });

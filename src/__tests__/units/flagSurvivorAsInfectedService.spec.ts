@@ -1,6 +1,6 @@
 import { v1 } from 'uuid';
 import FlagSurvivorAsInfectedService from '../../services/FlagSurvivorAsInfected';
-import SuvivorFakeDBAdapter from '../mocks/SuvivorFakeDBAdapter';
+import SuvivorFakeDBAdapter from '../mocks/SurvivorFakeDBAdapter';
 import utils from '../utils';
 import DomainError from '../../usecases/validations/DomainErro';
 

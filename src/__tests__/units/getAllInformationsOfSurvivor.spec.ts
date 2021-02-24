@@ -3,7 +3,7 @@ import faker from 'faker';
 import GetAllInformationsOfSurvivor from '../../services/GetAllInformationsOfSurvivor';
 import InventoryFakeDBAdapter from '../mocks/InventoryFakeDBAdapter';
 import ItemFakeDBAdapter from '../mocks/ItemFakeDBAdapter';
-import SuvivorFakeDBAdapter from '../mocks/SuvivorFakeDBAdapter';
+import SuvivorFakeDBAdapter from '../mocks/SurvivorFakeDBAdapter';
 import utils from '../utils';
 import DomainErro from '../../usecases/validations/DomainErro';
 

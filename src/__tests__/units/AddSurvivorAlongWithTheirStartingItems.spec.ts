@@ -1,5 +1,5 @@
 import RegisterNewSurvivor from '../../services/AddSurvivorAlongWithTheirStartingItems';
-import SurvivorFakeDBAdapter from '../mocks/SuvivorFakeDBAdapter';
+import SurvivorFakeDBAdapter from '../mocks/SurvivorFakeDBAdapter';
 import InventoryFakeDBAdapter from '../mocks/InventoryFakeDBAdapter';
 import ItemFakeDBAdapter from '../mocks/ItemFakeDBAdapter';
 import { RegisterSurvivorWithStartingItemsDTO } from '../../domain';
