@@ -2,12 +2,14 @@ import { Router } from 'express';
 import survivorRoutes from './survivor.routes';
 import itemRoutes from './item.routes';
 import tradeRoutes from './trade.routes';
+import ReportsControllerBuilder from '../builders/ReportsControllerBuilder';
 
 const routes = Router();
+const reportsControllerBuilder = ReportsControllerBuilder();
 
-routes.get('/', (req, res) => {
-  res.status(200);
-  return res.json({ ok: true });
+routes.get('/', async (req, res) => {
+  const report = await reportsControllerBuilder.index();
+  return res.json(report);
 });
 
 routes.use('/survivor', survivorRoutes);
