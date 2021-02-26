@@ -110,4 +110,9 @@ you need to configure the database credentials:
    docker-compose up -d
 ```
 
-##
+## API Documentation
+
+after starting the server, the documentation api can be found in **/api-docs/**
+
+example:
+    http://localhost:3333/api-docs/

@@ -2,6 +2,7 @@
 export * from './models/ISurvivor';
 export * from './models/IInventory';
 export * from './models/IItem';
+export * from './models/IResultOfReport';
 export * from './models/ISurvivorInfected';
 
 /* Usescases */
@@ -12,6 +13,7 @@ export * from './usecases/FlagSurvivorAsInfected';
 export * from './usecases/GetAllInformationsOfSurvivor';
 export * from './usecases/GetItemOfSurvivorInventory';
 export * from './usecases/TradeItem';
+export * from './usecases/CreateTheFullReport';
 
 /* DTOs */
 export * from './DTO/SurvivorDTO';
